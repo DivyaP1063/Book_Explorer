@@ -8,7 +8,7 @@ This document provides a comprehensive overview of how the Book Explorer applica
 ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
 │   FRONTEND      │    │    BACKEND      │    │    SCRAPER      │
 │   (Next.js)     │◄──►│   (Express.js)  │◄──►│   (Selenium)    │
-│   Port: 3000    │    │   Port: 5000    │    │   Automated     │
+│   Port: 3000    │    │   Port: 5000    │    │ GitHub Actions  │
 └─────────────────┘    └─────────────────┘    └─────────────────┘
          │                       │                       │
          │                       │                       │
@@ -201,9 +201,9 @@ class BookScraper {
    );
    ```
 
-## 🔄 Cron Job Flow
+## 🔄 Automated Scraping Flow
 
-### Two Scraping Mechanisms:
+### Three Scraping Mechanisms:
 
 #### 1. Development Scraper Watcher (`scripts/scraperWatcher.js`)
 - **Purpose**: For development environment
@@ -219,15 +219,45 @@ class BookScraper {
   });
   ```
 
-#### 2. Production Cron Job (`jobs/scrapingCron.js`)
-- **Purpose**: For production environment
+#### 2. GitHub Actions Workflow (`.github/workflows/scraper.yml`)
+- **Purpose**: For production environment (FREE automation)
 - **Schedule**: Daily at 3:00 AM UTC
 - **Process**:
+  ```yaml
+  name: Daily Book Scraping
+  on:
+    schedule:
+      - cron: '0 3 * * *'  # Daily at 3 AM UTC
+    workflow_dispatch:     # Manual trigger option
+  
+  jobs:
+    scrape:
+      runs-on: ubuntu-latest
+      steps:
+        - name: Checkout code
+          uses: actions/checkout@v4
+        
+        - name: Setup Node.js
+          uses: actions/setup-node@v4
+          
+        - name: Install dependencies
+          run: npm install
+          
+        - name: Run scraper
+          run: node scraper/runScraper.js
+          env:
+            MONGODB_URI: ${{ secrets.MONGODB_URI }}
+  ```
+
+#### 3. Manual Refresh Endpoint (`POST /api/books/refresh`)
+- **Purpose**: On-demand scraping via API
+- **Trigger**: User clicks refresh button or API call
+- **Process**:
   ```javascript
-  cron.schedule('0 3 * * *', async () => {
-    const scraper = new BookScraper();
-    await scraper.scrapeAllBooks();
-  }, { timezone: "UTC" });
+  // Trigger manual scraping
+  const BookScraper = require('../../scraper/bookScraper');
+  const scraper = new BookScraper();
+  await scraper.scrapeAllBooks();
   ```
 
 ### Cron Schedule Explanation:
@@ -240,6 +270,15 @@ class BookScraper {
  │ └──────── Hour (0-23)
  └────────── Minute (0-59)
 ```
+
+### GitHub Actions Flow:
+1. **Schedule Trigger**: GitHub automatically triggers workflow daily
+2. **Environment Setup**: Ubuntu runner with Node.js and Chrome
+3. **Code Checkout**: Downloads latest code from repository
+4. **Dependencies**: Installs npm packages including Selenium
+5. **Environment Variables**: Loads MongoDB URI from GitHub secrets
+6. **Scraper Execution**: Runs scraper to update database
+7. **Completion**: Workflow completes and logs results
 
 ## 🗄️ Database Flow
 

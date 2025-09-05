@@ -39,7 +39,7 @@ book-explorer/
 │   ├── controllers/      # API controllers (books, stats)
 │   ├── models/           # MongoDB models (Book schema)
 │   ├── routes/           # API routes
-│   ├── jobs/             # Cron jobs for production
+│   ├── jobs/             # Local cron jobs (development)
 │   ├── scripts/          # Utility scripts (scraper watcher)
 │   ├── server.js         # Main server file
 │   ├── package.json      # Backend dependencies
@@ -58,6 +58,9 @@ book-explorer/
 │   ├── hooks/            # Custom React hooks
 │   ├── package.json      # Frontend dependencies
 │   └── README.md         # Frontend documentation
+├── .github/              # GitHub configuration
+│   └── workflows/        # GitHub Actions workflows
+│       └── scraper.yml   # Automated scraping workflow (production)
 ├── database/              # Database schema & documentation
 │   └── schema.js         # MongoDB schema definition with indexes
 ├── .env.example          # Environment variables template
@@ -76,7 +79,7 @@ book-explorer/
 1. **Clone the repository**
 
    ```bash
-   git clone <your-repo-url>
+   git clone https://github.com/DivyaP1063/Book_Explorer.git
    cd book-explorer
    ```
 
@@ -250,8 +253,9 @@ NEXT_PUBLIC_API_URL=http://localhost:5000/api
 ### Scraper Configuration
 
 - **Development**: Scraper watcher runs every hour via `scripts/scraperWatcher.js`
-- **Production**: Cron job runs daily at 3:00 AM UTC via `jobs/scrapingCron.js`
+- **Production**: GitHub Actions workflow runs daily at 3:00 AM UTC via `.github/workflows/scraper.yml`
 - **Data Strategy**: Complete database replacement on each scrape (no duplicates)
+- **Free Automation**: Uses GitHub Actions for 100% free scheduled scraping
 
 ### Available Scripts
 
