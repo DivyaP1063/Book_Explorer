@@ -6,9 +6,12 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
-  output: 'export',
   trailingSlash: true,
-  distDir: 'out',
+  reactStrictMode: false,
+  swcMinify: false,
+  experimental: {
+    esmExternals: false,
+  },
   images: { 
     unoptimized: true,
     domains: ['books.toscrape.com', 'images.pexels.com']
