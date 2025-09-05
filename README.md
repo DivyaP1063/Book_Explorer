@@ -222,12 +222,10 @@ curl "http://localhost:5000/api/books?minPrice=10&maxPrice=30"
 - Single indexes on `price`, `rating`, `inStock`, `scrapedAt`
 - Compound indexes for common filter combinations
 
-**Full schema documentation**: See [database/schema.js](./database/schema.js)
 
 ## Documentation
 
 - **[FLOW.md](./FLOW.md)**: Complete application flow and architecture documentation
-- **[database/schema.js](./database/schema.js)**: Detailed MongoDB schema with examples
 - **Backend README**: `backend/README.md` - API documentation
 - **Frontend README**: `frontend/README.md` - Component documentation
 - **Scraper README**: `scraper/README.md` - Scraping process documentation
