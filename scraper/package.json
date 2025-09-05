@@ -1,0 +1,15 @@
+{
+  "name": "book-scraper",
+  "version": "1.0.0",
+  "description": "Web scraper for Books to Scrape website",
+  "main": "runScraper.js",
+  "scripts": {
+    "start": "node runScraper.js",
+    "scrape": "node runScraper.js"
+  },
+  "dependencies": {
+    "selenium-webdriver": "^4.15.0",
+    "mongoose": "^8.0.0",
+    "dotenv": "^16.3.1"
+  }
+}
