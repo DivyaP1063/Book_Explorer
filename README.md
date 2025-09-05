@@ -74,21 +74,26 @@ book-explorer/
 ## 🛠️ Installation
 
 1. **Clone the repository**
+
    ```bash
    git clone <your-repo-url>
    cd book-explorer
    ```
 
 2. **Install all dependencies**
+
    ```bash
    npm run install:all
    ```
 
 3. **Environment Setup**
+
    ```bash
    cp .env.example .env
    ```
+
    Then edit `.env` and add your MongoDB connection string:
+
    ```
    MONGODB_URI=your_mongodb_connection_string_here
    ```
@@ -106,14 +111,17 @@ book-explorer/
 ## 🚀 Running the Application
 
 ### Quick Start (Recommended)
+
 ```bash
 npm run dev
 ```
+
 This starts the backend server (port 5000), frontend (port 3000), and scraper watcher concurrently. The scraper will automatically run after 10 seconds and then hourly.
 
 ### Alternative Options
 
 **Start without scraper watcher:**
+
 ```bash
 npm run dev:basic
 ```
@@ -121,21 +129,25 @@ npm run dev:basic
 **Individual Services:**
 
 **Start Backend Server:**
+
 ```bash
 npm run backend:dev
 ```
 
 **Start Frontend:**
+
 ```bash
 npm run frontend:dev
 ```
 
 **Run Scraper Once:**
+
 ```bash
 npm run scraper
 ```
 
 **Run Scraper Watcher (periodic scraping):**
+
 ```bash
 npm run scraper:watch
 ```
@@ -150,6 +162,7 @@ When you run `npm run dev`, the database will be automatically populated:
 - Scraping repeats every hour to keep data fresh
 
 **Manual scraping** (if needed):
+
 ```bash
 npm run scraper
 ```
@@ -157,12 +170,14 @@ npm run scraper
 ## 🔧 API Endpoints
 
 ### Books
+
 - `GET /api/books` - Get paginated books with optional filters
-- `GET /api/books/stats` - Get book statistics  
+- `GET /api/books/stats` - Get book statistics
 - `GET /api/books/:id` - Get single book by ID
 - `POST /api/books/refresh` - Trigger manual scraping refresh
 
 ### Example API Usage
+
 ```bash
 # Get all books
 curl http://localhost:5000/api/books
@@ -180,6 +195,7 @@ curl "http://localhost:5000/api/books?minPrice=10&maxPrice=30"
 ## 🗄️ Database Schema
 
 ### Book Model
+
 ```javascript
 {
   title: String,           // Book title
@@ -198,25 +214,27 @@ curl "http://localhost:5000/api/books?minPrice=10&maxPrice=30"
 ```
 
 ### Indexes
+
 - Text index on `title` for search functionality
 - Single indexes on `price`, `rating`, `inStock`, `scrapedAt`
 - Compound indexes for common filter combinations
 
 **Full schema documentation**: See [database/schema.js](./database/schema.js)
 
-## � Documentation
+## Documentation
 
 - **[FLOW.md](./FLOW.md)**: Complete application flow and architecture documentation
 - **[database/schema.js](./database/schema.js)**: Detailed MongoDB schema with examples
 - **Backend README**: `backend/README.md` - API documentation
-- **Frontend README**: `frontend/README.md` - Component documentation  
+- **Frontend README**: `frontend/README.md` - Component documentation
 - **Scraper README**: `scraper/README.md` - Scraping process documentation
 
-## �🔧 Configuration
+## Configuration
 
 ### Environment Variables
 
 **Root `.env` file:**
+
 ```bash
 MONGODB_URI=your_mongodb_connection_string_here
 NODE_ENV=development
@@ -224,55 +242,61 @@ PORT=5000
 ```
 
 **Frontend `.env.local` file:**
+
 ```bash
 NEXT_PUBLIC_API_URL=http://localhost:5000/api
 ```
 
 ### Scraper Configuration
+
 - **Development**: Scraper watcher runs every hour via `scripts/scraperWatcher.js`
 - **Production**: Cron job runs daily at 3:00 AM UTC via `jobs/scrapingCron.js`
 - **Data Strategy**: Complete database replacement on each scrape (no duplicates)
 
 ### Available Scripts
-| Command | Description |
-|---------|-------------|
-| `npm run dev` | Start all services (backend + frontend + scraper watcher) |
-| `npm run dev:basic` | Start only backend + frontend |
-| `npm run setup` | Install dependencies + run initial scrape |
-| `npm run scraper` | Run scraper once |
-| `npm run scraper:watch` | Start scraper watcher (hourly) |
-| `npm run build` | Build frontend for production |
-| `npm run start` | Start production servers |
 
-## 🐛 Troubleshooting
+| Command                 | Description                                               |
+| ----------------------- | --------------------------------------------------------- |
+| `npm run dev`           | Start all services (backend + frontend + scraper watcher) |
+| `npm run dev:basic`     | Start only backend + frontend                             |
+| `npm run setup`         | Install dependencies + run initial scrape                 |
+| `npm run scraper`       | Run scraper once                                          |
+| `npm run scraper:watch` | Start scraper watcher (hourly)                            |
+| `npm run build`         | Build frontend for production                             |
+| `npm run start`         | Start production servers                                  |
 
 ## 🐛 Troubleshooting
 
 ### Common Issues
 
 1. **Selenium WebDriver Issues**
+
    - Make sure Chrome browser is installed
    - On Linux servers, install additional dependencies for headless Chrome
    - Check Chrome version compatibility with selenium-webdriver
 
 2. **MongoDB Connection Issues**
+
    - Verify your MongoDB URI in the `.env` file
    - Ensure MongoDB service is running (local) or accessible (cloud)
    - Check network connectivity and firewall settings
    - For MongoDB Atlas, ensure IP whitelist includes your address
 
 3. **API Connection Issues**
+
    - Make sure the backend server is running on port 5000
    - Check if frontend `.env.local` has correct `NEXT_PUBLIC_API_URL`
    - Verify CORS settings if accessing from different origins
    - Check console for network errors
 
 4. **Port Conflicts**
+
    - Backend uses port 5000, frontend uses port 3000
    - Change ports in package.json scripts if needed
    - Kill existing processes: `npx kill-port 5000` or `npx kill-port 3000`
 
 5. **Filter/Select Component Errors**
+
    - Ensure no `SelectItem` components have empty string values
    - Check Radix UI component compatibility
    - Clear browser cache if components behave unexpectedly
@@ -285,12 +309,14 @@ NEXT_PUBLIC_API_URL=http://localhost:5000/api
 ## 📱 Usage
 
 ### Getting Started
+
 1. **Run Setup**: `npm run setup` (first time only)
-2. **Start Application**: `npm run dev` 
+2. **Start Application**: `npm run dev`
 3. **Wait for Scraper**: Initial data loads after 10 seconds
 4. **Browse**: Visit http://localhost:3000
 
 ### Using the Interface
+
 1. **Search Books**: Type in the search box and click "Search"
 2. **Apply Filters**: Click "Show Filters" to access advanced options
    - **Minimum Rating**: Select 1-5 stars minimum
@@ -302,12 +328,14 @@ NEXT_PUBLIC_API_URL=http://localhost:5000/api
 6. **Refresh Data**: Use refresh button in header to update book data
 
 ### API Usage
+
 - **Frontend**: Automatically handles all API calls
 - **Direct API**: Access at `http://localhost:5000/api/books`
 - **Manual Refresh**: POST to `/api/books/refresh`
 - **Statistics**: GET `/api/books/stats` for database insights
 
 ### Data Management
+
 - **Automatic**: Scraper runs hourly to keep data fresh
 - **Manual**: Use refresh button or API endpoint
 - **No Duplicates**: Each scrape replaces all data completely
