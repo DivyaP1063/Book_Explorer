@@ -4,12 +4,12 @@ import { Book } from '@/types/book';
 import { BookCard } from './BookCard';
 
 interface BookGridProps {
-  books: Book[];
+  books: Book[] | undefined;
   onBookSelect: (book: Book) => void;
 }
 
 export function BookGrid({ books, onBookSelect }: BookGridProps) {
-  if (books.length === 0) {
+  if (!books || books.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-12 text-gray-500">
         <div className="text-6xl mb-4">📚</div>

@@ -83,6 +83,15 @@ export default function Home() {
       }
     } catch (error) {
       console.error('Error fetching books:', error);
+      // Reset to safe defaults on error
+      setBooks([]);
+      setPagination({
+        currentPage: 1,
+        totalPages: 1,
+        totalBooks: 0,
+        hasNextPage: false,
+        hasPrevPage: false
+      });
       toast({
         title: "Connection Error",
         description: "Could not connect to the server. Make sure the backend is running.",
@@ -139,13 +148,13 @@ export default function Home() {
             <>
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-2 sm:space-y-0">
                 <h2 className="text-lg sm:text-xl font-semibold text-gray-900">
-                  {pagination.totalBooks > 0 
+                  {pagination && pagination.totalBooks > 0 
                     ? `Found ${pagination.totalBooks} book${pagination.totalBooks === 1 ? '' : 's'}`
                     : 'No books found'
                   }
                 </h2>
                 <p className="text-xs sm:text-sm text-gray-600">
-                  Page {pagination.currentPage} of {pagination.totalPages}
+                  Page {pagination?.currentPage || 1} of {pagination?.totalPages || 1}
                 </p>
               </div>
 
@@ -156,10 +165,10 @@ export default function Home() {
 
               {/* Pagination */}
               <Pagination
-                currentPage={pagination.currentPage}
-                totalPages={pagination.totalPages}
-                hasNextPage={pagination.hasNextPage}
-                hasPrevPage={pagination.hasPrevPage}
+                currentPage={pagination?.currentPage || 1}
+                totalPages={pagination?.totalPages || 1}
+                hasNextPage={pagination?.hasNextPage || false}
+                hasPrevPage={pagination?.hasPrevPage || false}
                 onPageChange={handlePageChange}
               />
             </>

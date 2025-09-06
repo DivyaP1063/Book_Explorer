@@ -16,7 +16,7 @@ connectDB();
 app.use(
   cors({
     origin: "*", // Allow all origins temporarily
-    credentials: true,
+
   })
 );
 app.use(express.json());
